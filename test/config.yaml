@@ -1,0 +1,17 @@
+sourcePort: 3001
+targetUrl: 'http://localhost:8082'
+policies:
+  - name: Cors
+    config:
+      origin: '*'
+      methods:
+        - GET
+        - POST
+  - name: JwtDecode
+    config:
+      headerName: 'Authorization'
+      userIdKey: 'sub'
+  - name: HeaderTransform
+    config:
+      'X-Forwarded-User': '${x-user-id}'
+      'X-Custom-Header': 'TestValue'

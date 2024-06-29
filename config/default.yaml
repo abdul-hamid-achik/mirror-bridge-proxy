@@ -1,0 +1,20 @@
+sourcePort: 3000
+targetUrl: 'https://jsonplaceholder.typicode.com/'
+policies:
+  - name: Cors
+    config:
+      origin: '*'
+      methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+      credentials: true
+  - name: JwtDecode
+    config:
+      headerName: 'Authorization'
+      userIdKey: 'sub'
+  - name: HeaderTransform
+    config:
+      'X-Forwarded-User': '${x-user-id}'
+      'X-Custom-Header': 'CustomValue'

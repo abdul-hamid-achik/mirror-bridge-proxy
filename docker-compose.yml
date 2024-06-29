@@ -1,0 +1,12 @@
+version: "3"
+services:
+  mirror-bridge-proxy:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./config:/app/config
+      - .:/app
+    environment:
+      - CONFIG_FILE=/app/config/default.yaml
+    command: ["bun", "run", "--hot", "src/index.ts"]
