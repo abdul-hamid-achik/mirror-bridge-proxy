@@ -1,5 +1,3 @@
-import { decodeJwt } from './jwt';
-
 export async function transformHeaders(
     headers: Record<string, string | string[] | undefined>,
     transformations: Record<string, string>
@@ -16,15 +14,4 @@ export async function transformHeaders(
     }
 }
 
-export async function processJwtHeader(
-    headers: Record<string, string | string[] | undefined>,
-    jwtConfig: { headerName: string; userIdKey: string }
-): Promise<void> {
-    const token = headers[jwtConfig.headerName.toLowerCase()] as string | undefined;
-    if (token) {
-        const userId = await decodeJwt(token, jwtConfig.userIdKey);
-        if (userId) {
-            headers['x-user-id'] = userId;
-        }
-    }
-}
+

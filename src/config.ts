@@ -1,4 +1,3 @@
-import fs from 'fs';
 import YAML from 'yamljs';
 
 export interface ProxyConfig {
@@ -6,9 +5,11 @@ export interface ProxyConfig {
     targetUrl: string;
     policies: Array<{
         name: string;
-        config: any;
+        config: Record<string, unknown>;
     }>;
 }
+
+export type ProxyContext = Map<string, unknown>;
 
 export function loadConfig(): ProxyConfig {
     const configPath = process.env.CONFIG_FILE || './config/default.yaml';

@@ -9,4 +9,4 @@ services:
       - .:/app
     environment:
       - CONFIG_FILE=/app/config/default.yaml
-    command: ["bun", "run", "--hot", "src/index.ts"]
+    command: ["bun", "run", "--hot", "src/index.ts", "--log-level", "debug"]

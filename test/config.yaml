@@ -9,8 +9,9 @@ policies:
         - POST
   - name: JwtDecode
     config:
-      headerName: 'Authorization'
-      userIdKey: 'sub'
+      header: 'Authorization'
+      payloadKey: 'sub'
+      context: 'x-user-id'
   - name: HeaderTransform
     config:
       'X-Forwarded-User': '${x-user-id}'

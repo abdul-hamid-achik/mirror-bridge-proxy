@@ -1,0 +1,43 @@
+name: Mirror Bridge Proxy CI
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  lint:
+    name: Lint Codebase
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install
+      - run: bun run lint
+
+  test:
+    name: Run Tests
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install
+      - run: bun run test
+
+  build-and-publish:
+    name: Build and Publish
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t mirror-bridge-proxy .
+      - name: Publish Docker image to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker tag mirror-bridge-proxy ${{ secrets.DOCKER_USERNAME }}/mirror-bridge-proxy:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/mirror-bridge-proxy:latest
+      - name: Publish package to GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+          bun publish

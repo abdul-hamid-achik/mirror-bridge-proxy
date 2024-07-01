@@ -10,10 +10,13 @@ policies:
         - PUT
         - DELETE
       credentials: true
+
   - name: JwtDecode
     config:
-      headerName: 'Authorization'
-      userIdKey: 'sub'
+      header: 'Authorization'
+      payload: 'sub'
+      context: 'x-user-id'
+
   - name: HeaderTransform
     config:
       'X-Forwarded-User': '${x-user-id}'

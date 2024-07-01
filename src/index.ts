@@ -8,8 +8,9 @@ async function main() {
     try {
         const config = loadConfig();
         await setupProxy(fastify, config);
-        await fastify.listen({ port: config.sourcePort });
+        await fastify.listen({ port: config.sourcePort, host: '0.0.0.0' });
     } catch (err) {
+        console.log(err);
         fastify.log.error(err);
         process.exit(1);
     }
